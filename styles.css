@@ -14,29 +14,28 @@ body {
 input, button {
 	font-family: 'Amatic SC', cursive;
 	font-weight: 1200;
+	width: 250px;
 }
 
 .main-div, .logged-in {
     position: absolute;
     width: 250px;
     height: 250px;
-	/* margin: 0px auto; */
 	margin-top: 150px;
     margin-left: -125px;
     left: 50%;
     margin-top: -200px;
-	/* padding: 20px; */
 	top: 50%;
 }
 
 .main-div input {
-	display: block;
+	/* display: block; */
 	border: 1px solid #ccc;
 	border-radius: 5px;
 	background: #fff;
 	padding: 15px;
 	outline: none;
-	width: 180px;
+	width: 100%;
 	margin-bottom: 20px;
 	transition: 0.3s;
 	-webkit-transition: 0.3s;
@@ -44,19 +43,16 @@ input, button {
 }
 
 .main-div button, .logged-in button {
-	/* display: block; */
 	position: absolute;
 	background: #5d8ffc;
 	color: #fff;
 	border:  1px solid #5d8ffc;
 	border-radius: 5px;
 	padding: 15px;
-	width: 180px;
+	width: 100%;
 	transition: 0.3s;
 	-webkit-transition: 0.3s;
 	-moz-transition: 0.3s;
-	/* margin-left: -90px; */
-	/* left:50%; */
 	position: absolute;
 }
 .main-div button:hover, .logged-in button:hover {
@@ -68,9 +64,9 @@ input, button {
 .main-div input:focus {
 	border: 1px solid #999;
 }
-h2 {
+h2,h3,p {
 	text-align: center;
-	/* margin: 15px; */
+
 }
 
 .logged-in {
