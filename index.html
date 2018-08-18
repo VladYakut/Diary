@@ -2,32 +2,45 @@
 <html>
 <head>
 	<title>Чатик</title>   
-	<link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&amp;subset=cyrillic" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css?family=Comfortaa&amp;subset=cyrillic" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&amp;subset=cyrillic" rel="stylesheet"> 
 </head>
-<body>
-    
+<body>  
+    <div class="authentication" id="authentication">
         <div class="main-div" id="main">
             <h2>Привет! Введи email и пароль чтобы авторизироваться :3</h2>
-        <div class="input" onsubmit="">
-            <input type="email" placeholder="Email..." id="email">
-            <input type="password" placeholder="Password..." id="password">
-            <button onclick="login()">Log in!</button>
+            <div class="input" onsubmit="">
+                <input type="email" placeholder="Email..." id="email">
+                <input type="password" placeholder="Password..." id="password">
+                <button onclick="login()">Вход</button>
+                <button id="new" onclick="registerUser()">Регистрация</button>
+            </div>
         </div>
+    </div>
+
+    <div class="mainbody" id="blog">
+        <div class="navbar">
+            <h1>Твой личный дневник</h1>
+            <!-- <h2>Привет юзернеймыч</h2> -->
+            <div class="navbuttons">
+            <button onclick="">Профиль</button>
+            <button onclick="logout()">Выйти</button>
+            </div>
         </div>
-        <div class="logged-in" id="logged">
-            <h3>Welcome user!</h3>
-            <p>welcome to firebase</p>
-            <button onclick="logout()">Logout!</button>
+        <div class="diary">
+            <button onclick="addNote()">Добавить запись</button>
+            <textarea id="newNote" maxlength="3000" placeholder="..."></textarea>
+            <button onclick="">Показать все записи</button>
+            <h2>Последние добавленные</h2>
+            <div class="notes">
+            <p id="notes">zzzzzzzzzz</p>
+            </div>
         </div>
-    
+    </div>
 	<script src="https://www.gstatic.com/firebasejs/5.3.1/firebase.js"></script>
 	
 	<script type="text/javascript" src="script.js"></script>
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	
 </body>
-
-
-
-
 </html>
