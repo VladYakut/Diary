@@ -11,38 +11,39 @@ firebase.initializeApp(config);
 //     .then(data => data.json())
 //     .then(data => console.log(data));
 var database = firebase.database();
+const authenticationUI = document.getElementById("authentication");
+const mainbodyUI = document.getElementById("blog");
 
 
-
+// Check if user is login
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
-    document.getElementById('authentication').style.display = 'none'; 
-    document.getElementById('blog').style.display = 'block'; 
+    authenticationUI.style.display = "none"; 
+    mainbodyUI.style.display = "block"; 
     console.log(user.email + ' is here');
-    console.log(latestNotes());
-    // document.getElementById('notes').innerHTML = latestNotes();
+    latestNotes();
   } else {
-    document.getElementById('authentication').style.display = 'block';
-    document.getElementById('blog').style.display = 'none';
+    authenticationUI.style.display = "block";
+    mainbodyUI.style.display = "none";
   }
 });
 
 function registerUser() {
-  var userEmail = document.getElementById("email").value;
-  var userPass = document.getElementById("password").value;
+  let userEmail = document.getElementById("email").value;
+  let userPass = document.getElementById("password").value;
   firebase.auth().createUserWithEmailAndPassword(userEmail, userPass).catch(function(error) {
-    var errorCode = error.code;
-    var errorMessage = error.message;
-    alert('Error: ' + errorMessage);
+    let errorCode = error.code;
+    let errorMessage = error.message;
+    alert("Error: " + errorMessage);
   });
 }
 
 function login() {
-  var userEmail = document.getElementById("email").value;
-  var userPass  = document.getElementById("password").value;
+  let userEmail = document.getElementById("email").value;
+  let userPass  = document.getElementById("password").value;
   firebase.auth().signInWithEmailAndPassword(userEmail, userPass).catch(function(error) {
-    var errorCode = error.code;
-    var errorMessage = error.message;
+    let errorCode = error.code;
+    let errorMessage = error.message;
     alert('Error: ' + errorMessage);// ...
   });
 }
@@ -51,60 +52,66 @@ function logout() {
   firebase.auth().signOut().then(function() {
     // Sign-out successful.
   }).catch(function(error) {
-    var errorMessage = error.message;
-    alert('Error: ' + errorMessage);
+    let errorMessage = error.message;
+    alert("Error: " + errorMessage);
   });
 }
 
-
+// Add data to database
 function writeUserData(userId, email, note) {
   console.log('userId, email, note: ' + userId, email, note);
-  database.ref('notes/' + userId).push({
+  database.ref("notes/" + userId).push({
     email: email,
     note: note
   });
 }
 
 function addNote() {
-  var user = firebase.auth().currentUser;
-  if (user != null) {
-    var userId = user.uid;
-    var email = user.email;
-    var note = document.getElementById('newNote').value;
-  }
+  let user = firebase.auth().currentUser;
+  let userId = user.uid;
+  let email = user.email;
+  let note = document.getElementById('newNote').value;
   writeUserData(userId,email,note);
-  document.getElementById('newNote').value = '';
-  document.getElementById('newNote').placeholder = '...';
+  document.getElementById("newNote").value = '';
+  document.getElementById("newNote").placeholder = '';
+  latestNotes();
   }
 
+// Display data
 function latestNotes() {
-  let noteString = 's';
   let userId = firebase.auth().currentUser.uid;
   let readNote = firebase.database().ref('notes/' + userId);
-  readNote.on('value',function(snapshot) {
+  let promise = new Promise((resolve,reject) => {
+    let noteString = '';
+    let secondString = '';
+    readNote.on('value',function(snapshot) {
       snapshot.forEach(function(childSnapshot) {
-      noteString += childSnapshot.val().note + ' \n';
+        secondString += childSnapshot.val().note;
+        noteString += childSnapshot.val().note + '<br>';
       });
-      console.log(noteString);
+      resolve(noteString);
+    });
   });
-  return noteString
+  promise
+  .then( noteString => {
+    if (noteString === '') { 
+      let str = 'Нет записей';
+      return str 
+    }
+    else {
+      let str = [];
+      str = noteString.split('<br>');
+      str.pop();
+      str.reverse();
+      str = str.join('<br><br>');
+      return str;
+    }
+  })
+  .then( str => { 
+    document.getElementById('notes').innerHTML = str;
+  },
+  error => { 
+    alert(error);
+  }); 
 }
     
-  var check = function() { setTimeout(function() {
-  let userId = firebase.auth().currentUser.uid;
-  var readNote = firebase.database().ref('notes/' + userId);
-  readNote.on('value', function(snapshot) {
-    snapshot.forEach(function(childSnapshot) {
-      
-    console.log('123'+ childSnapshot.val().note);
-    })
-                      //   var rootRef = firebase.database().ref();
-                      //   rootRef.once("value")
-                      //   .then(function(snapshot) {
-                      //   console.log('1'+snapshot.key); //
-                      //   console.log('2'+ snapshot.child("notes/").key); 
-                      // });
-                      //   // console.log(snapshot.val().note);
-                      // });
-    });}, 2000);}
-  
